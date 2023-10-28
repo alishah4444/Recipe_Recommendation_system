@@ -15,6 +15,9 @@ import {setUserInfo} from '../../../reducers/userReducer';
 import {ServiceCall} from '../../utils/ajaxCall';
 import {isEmpty} from 'lodash';
 import ImageWrapper from '../../component/ImageWrapper';
+import {useNavigation} from '@react-navigation/native';
+import CategoryMenu from '../../component/CategoryMenu';
+import TagHeading from '../../component/tagHeading';
 
 const {width} = Dimensions.get('screen');
 
@@ -25,25 +28,26 @@ export default function Home() {
 
   const user = useSelector(state => state.userReducer.user);
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   useEffect(() => {
     onChangeHandler();
     return () => {};
   }, []);
 
-  //   useEffect(() => {
-  //     setUserData();
-  //     return () => {};
-  //   }, []);
+  useEffect(() => {
+    // setUserData();
+    return () => {};
+  }, []);
 
-  const setUserData = () => {
-    dispatch(
-      setUserInfo({
-        username: 'Alishah',
-        url: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png',
-      }),
-    );
-  };
+  // const setUserData = () => {
+  //   dispatch(
+  //     setUserInfo({
+  //       username: 'Alishah',
+  //       url: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png',
+  //     }),
+  //   );
+  // };
 
   const renderItem = ({item, index}) => (
     <MainRender item={item} width={width} />
@@ -85,42 +89,46 @@ export default function Home() {
   );
 
   const ListHeaderComponent = () => (
-    <View style={style.header}>
-      <TouchableOpacity onPress={() => {}}>
-        <Text style={{color: '#686F82'}}>
-          {!isEmpty(user) ? user.username : 'Login or sign up'}
-        </Text>
-        <Text
-          style={{
-            color: '#02c39a',
-            fontWeight: 'bold',
-            fontSize: 22,
-            fontFamily: 'Pacifico-Regular',
-          }}>
-          Tasty Trove
-        </Text>
-      </TouchableOpacity>
+    <View>
+      <View style={style.header}>
+        <TouchableOpacity onPress={() => {}}>
+          <Text style={{color: '#686F82'}}>
+            {!isEmpty(user) ? user.username : 'Login or sign up'}
+          </Text>
+          <Text
+            style={{
+              color: '#02c39a',
+              fontWeight: 'bold',
+              fontSize: 22,
+              fontFamily: 'Pacifico-Regular',
+            }}>
+            Tasty Trove
+          </Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        onPress={() => {}}
-        style={{
-          backgroundColor: '#02c39a',
-          height: 50,
-          width: 50,
-          borderRadius: 50 / 2,
-        }}>
-        <ImageWrapper
-          url={!isEmpty(user) ? user.url : ''}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Login', {})}
           style={{
             backgroundColor: '#02c39a',
             height: 50,
             width: 50,
-            overflow: 'hidden',
-
             borderRadius: 50 / 2,
-          }}
-        />
-      </TouchableOpacity>
+          }}>
+          <ImageWrapper
+            url={!isEmpty(user) ? user.url : ''}
+            style={{
+              backgroundColor: '#02c39a',
+              height: 50,
+              width: 50,
+              overflow: 'hidden',
+
+              borderRadius: 50 / 2,
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+      <TagHeading name={'Category'} />
+      <CategoryMenu navigation={navigation} />
     </View>
   );
 

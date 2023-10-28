@@ -1,5 +1,6 @@
 import Home from '../container/Home/Home';
-
+import LoginScreen from '../container/Login/Login';
+import Signup from '../container/Signup/Signup';
 import BottomNavigation from './BottomNavigation';
 
 const forFade = ({current}) => ({
@@ -70,8 +71,8 @@ const stacks = [
     },
   },
   {
-    Screen: 'login',
-    component: Home,
+    Screen: 'Login',
+    component: LoginScreen,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,
@@ -106,7 +107,7 @@ const stacks = [
 
   {
     Screen: 'Signup',
-    component: Home,
+    component: Signup,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,

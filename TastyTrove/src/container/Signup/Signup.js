@@ -5,19 +5,49 @@ import style from '../Login/style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TextInputComponent from '../../component/TextInputComponent';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {useMutation} from '@apollo/client';
+import {CREATE_USER} from '../../utils/fetcher';
+import client from '../../utils/Apollo';
+import _ from 'lodash';
+import {useDispatch} from 'react-redux';
+import {setUserInfo} from '../../../reducers/userReducer';
 
 export default function Signup(props) {
-  //   const {navigation} = useRoute();
-
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const [userInfo, setuserInfo] = useState({
-    name: '',
+    email: '',
     password: '',
-    phoneNo: '',
+    repassword: '',
   });
+  const [error, setError] = useState('');
+  const [createUser] = useMutation(CREATE_USER, {client});
 
-  const onChangeHandler = (name, value) => {};
+  const onChangeHandler = (name, value) => {
+    if (name === 'repassword') {
+      userInfo.password === value
+        ? setuserInfo(prev => ({...prev, [name]: value}))
+        : setError('Please enter correct credentials');
+    } else {
+      setuserInfo(prev => ({...prev, [name]: value}));
+    }
+  };
+
+  const handleSubmittion = async () => {
+    console.log(userInfo);
+
+    let inputVar = {email: userInfo.email, password: userInfo.password};
+    const {data} = await createUser({variables: {input: inputVar}});
+    console.log('User created:', data.createUser);
+
+    if (!_.isEmpty(data?.createUser)) {
+      dispatch(setUserInfo(data.createUser));
+      navigation.navigate('Home');
+    } else {
+      console.log('Eror');
+    }
+  };
 
   return (
     <View style={style.container}>
@@ -44,32 +74,29 @@ export default function Signup(props) {
 
       <Text style={style.email}>Email</Text>
       <TextInputComponent
-        value={userInfo.name}
         placeholder={'Email'}
         inputStyle={style.input}
         onChangeHandler={value => {
           console.log(value);
-          setUserName(value);
+          onChangeHandler('email', value);
         }}
       />
       <Text style={style.email}>Password</Text>
 
       <TextInputComponent
-        value={userInfo.password}
         placeholder={'Password'}
         inputStyle={style.input}
         onChangeHandler={value => {
-          setPassword(value);
+          onChangeHandler('password', value);
         }}
         secureTextEntry={true}
       />
       <Text style={style.email}>Password</Text>
       <TextInputComponent
-        value={userInfo.phoneNo}
-        placeholder={'Password'}
+        placeholder={'Confirm Password'}
         inputStyle={style.input}
         onChangeHandler={value => {
-          setPassword(value);
+          onChangeHandler('repassword', value);
         }}
         secureTextEntry={true}
       />
@@ -78,7 +105,7 @@ export default function Signup(props) {
         <Button
           style={style.button}
           labelStyle={style.bottonLabel}
-          onPress={() => navigation.navigate('BottomTabs', {})}>
+          onPress={handleSubmittion}>
           Login
         </Button>
       </View>

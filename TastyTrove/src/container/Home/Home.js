@@ -17,7 +17,8 @@ import {isEmpty} from 'lodash';
 import ImageWrapper from '../../component/ImageWrapper';
 import {useNavigation} from '@react-navigation/native';
 import CategoryMenu from '../../component/CategoryMenu';
-import TagHeading from '../../component/tagHeading';
+import TagHeading from '../../component/TagHeading';
+import {getEmailInitials} from '../../constant/constant';
 
 const {width} = Dimensions.get('screen');
 
@@ -32,22 +33,14 @@ export default function Home() {
 
   useEffect(() => {
     onChangeHandler();
+
+    console.log(user.email);
     return () => {};
   }, []);
 
   useEffect(() => {
-    // setUserData();
     return () => {};
   }, []);
-
-  // const setUserData = () => {
-  //   dispatch(
-  //     setUserInfo({
-  //       username: 'Alishah',
-  //       url: 'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png',
-  //     }),
-  //   );
-  // };
 
   const renderItem = ({item, index}) => (
     <MainRender item={item} width={width} />
@@ -107,15 +100,21 @@ export default function Home() {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('Login', {})}
+          onPress={() =>
+            !isEmpty(user)
+              ? navigation.navigate('Setting', {})
+              : navigation.navigate('Login', {})
+          }
           style={{
             backgroundColor: '#02c39a',
             height: 50,
             width: 50,
+            alignItems: 'center',
+            justifyContent: 'center',
             borderRadius: 50 / 2,
           }}>
-          <ImageWrapper
-            url={!isEmpty(user) ? user.url : ''}
+          {/* <ImageWrapper
+            url={!isEmpty(user) ? user.email : ''}
             style={{
               backgroundColor: '#02c39a',
               height: 50,
@@ -124,7 +123,20 @@ export default function Home() {
 
               borderRadius: 50 / 2,
             }}
-          />
+          /> */}
+
+          {!isEmpty(user) ? (
+            <Text
+              style={{
+                color: '#ffffff',
+                fontWeight: 'bold',
+                alignSelf: 'center',
+                fontSize: 22,
+                fontFamily: 'Pacifico-Regular',
+              }}>
+              {getEmailInitials(user.email)}
+            </Text>
+          ) : null}
         </TouchableOpacity>
       </View>
       <TagHeading name={'Category'} />

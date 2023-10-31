@@ -1,17 +1,26 @@
 import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import style from './style';
 import TextInputComponent from '../../component/TextInputComponent';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Button} from 'react-native-paper';
-
+import {useQuery} from '@apollo/client';
+import {USER_QUERY} from '../../utils/fetcher';
+import client from '../../utils/Apollo';
 const LoginScreen = () => {
+  const {data, loading, error} = useQuery(USER_QUERY, {client});
   const navigation = useNavigation();
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+
+  useEffect(() => {
+    console.log(data);
+
+    return () => {};
+  }, []);
 
   return (
     <View style={style.container}>

@@ -79,6 +79,12 @@ const notificationType = [
   {type: 'Unread', key: 3},
 ];
 
+function getEmailInitials(email) {
+  const words = email.split('@')[0].split('.');
+  const initials = words.map(word => word.charAt(0).toUpperCase());
+  return initials.join('');
+}
+
 export {
   mealType,
   accountSetting,
@@ -89,4 +95,5 @@ export {
   filterByCategory,
   filterByMeal,
   notificationType,
+  getEmailInitials,
 };

@@ -3,7 +3,8 @@ import React, {memo, useCallback, FlatList} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import stacks from './src/route/stackNavigation';
-
+import {ApolloProvider} from '@apollo/client';
+import client from './src/utils/Apollo';
 export default function App() {
   const SharedStack = createStackNavigator();
 
@@ -32,14 +33,16 @@ export default function App() {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <NavigationContainer theme={{colors: {background: '#2C2F38'}}}>
-        <StatusBar
-          backgroundColor={'#2C2F38'}
-          animated
-          barStyle={'light-content'}></StatusBar>
+      <ApolloProvider client={client}>
+        <NavigationContainer theme={{colors: {background: '#2C2F38'}}}>
+          <StatusBar
+            backgroundColor={'#2C2F38'}
+            animated
+            barStyle={'light-content'}></StatusBar>
 
-        <Screen />
-      </NavigationContainer>
+          <Screen />
+        </NavigationContainer>
+      </ApolloProvider>
     </SafeAreaView>
   );
 }

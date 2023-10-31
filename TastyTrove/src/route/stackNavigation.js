@@ -2,6 +2,7 @@ import Home from '../container/Home/Home';
 import LoginScreen from '../container/Login/Login';
 import Signup from '../container/Signup/Signup';
 import BottomNavigation from './BottomNavigation';
+import Setting from '../container/Setting/Setting';
 
 const forFade = ({current}) => ({
   cardStyle: {
@@ -20,7 +21,7 @@ const stacks = [
   },
   {
     Screen: 'Setting',
-    component: Home,
+    component: Setting,
     Options: {
       headerShown: false,
     },

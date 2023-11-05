@@ -1,26 +1,51 @@
 import {View, Text, TouchableOpacity, Dimensions} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import style from './style';
 import TextInputComponent from '../../component/TextInputComponent';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Button} from 'react-native-paper';
-import {useQuery} from '@apollo/client';
-import {USER_QUERY} from '../../utils/fetcher';
+import {useMutation, useQuery} from '@apollo/client';
+import {LOGIN_USER, USER_QUERY} from '../../utils/fetcher';
 import client from '../../utils/Apollo';
+import {useDispatch} from 'react-redux';
+import {setUserInfo} from '../../../reducers/userReducer';
+
 const LoginScreen = () => {
   const {data, loading, error} = useQuery(USER_QUERY, {client});
+  const dispatch = useDispatch();
+  const [loginUser] = useMutation(LOGIN_USER, {client});
   const navigation = useNavigation();
   const [userName, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [errorCli, setErrorCLi] = useState(null);
 
   useEffect(() => {
-    console.log(data);
-
     return () => {};
   }, []);
+
+  const handleLogin = async () => {
+    try {
+      if (userName !== null && password !== null) {
+        const {data} = await loginUser({
+          variables: {email: userName, password: password},
+        });
+
+        if (data != null) {
+          dispatch(setUserInfo(data.loginUser));
+          navigation.navigate('Home');
+        }
+
+        console.log(data);
+      } else {
+        setErrorCLi('Please enter a username and password');
+      }
+    } catch (error) {
+      console.error('GraphQL error:', error.message);
+      setErrorCLi('Login failed. Please check your credentials.');
+    }
+  };
 
   return (
     <View style={style.container}>
@@ -82,7 +107,7 @@ const LoginScreen = () => {
         <Button
           style={style.button}
           labelStyle={style.bottonLabel}
-          onPress={() => navigation.navigate('BottomTabs', {})}>
+          onPress={handleLogin}>
           Login
         </Button>
 

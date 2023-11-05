@@ -5,6 +5,9 @@ import {NavigationContainer} from '@react-navigation/native';
 import stacks from './src/route/stackNavigation';
 import {ApolloProvider} from '@apollo/client';
 import client from './src/utils/Apollo';
+
+import {AppContextProvider} from './src/utils/AppPreference';
+
 export default function App() {
   const SharedStack = createStackNavigator();
 
@@ -34,14 +37,16 @@ export default function App() {
   return (
     <SafeAreaView style={{flex: 1}}>
       <ApolloProvider client={client}>
-        <NavigationContainer theme={{colors: {background: '#2C2F38'}}}>
-          <StatusBar
-            backgroundColor={'#2C2F38'}
-            animated
-            barStyle={'light-content'}></StatusBar>
+        <AppContextProvider>
+          <NavigationContainer theme={{colors: {background: '#2C2F38'}}}>
+            <StatusBar
+              backgroundColor={'#2C2F38'}
+              animated
+              barStyle={'light-content'}></StatusBar>
 
-          <Screen />
-        </NavigationContainer>
+            <Screen />
+          </NavigationContainer>
+        </AppContextProvider>
       </ApolloProvider>
     </SafeAreaView>
   );

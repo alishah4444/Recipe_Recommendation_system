@@ -8,14 +8,12 @@ import {
   Dimensions,
 } from 'react-native';
 import React from 'react';
-import axios from 'axios';
-import {filterByCategory, filterByMeal} from '../../utilites/constant';
 import {useState, useMemo, useEffect, useCallback} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import styles from '../search/style';
-import ImageWrapper from '../../components/FastImage';
-import {getProductByItem} from '../../utilites/commonFunction';
+import ImageWrapper from '../../component/FastImage';
+import {getProductByItem} from '../../utils/commonFunction';
 export default function ProductSearch(props) {
   const {searchItem} = props.route.params;
   const [loading, setLoading] = useState(false);

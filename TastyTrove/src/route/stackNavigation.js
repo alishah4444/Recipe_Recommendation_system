@@ -3,6 +3,9 @@ import LoginScreen from '../container/Login/Login';
 import Signup from '../container/Signup/Signup';
 import BottomNavigation from './BottomNavigation';
 import Setting from '../container/Setting/Setting';
+import Description from '../container/description/description';
+import SearchScreen from '../container/search/search';
+import ProductSearch from '../container/productSearch/productSearch';
 
 const forFade = ({current}) => ({
   cardStyle: {
@@ -57,7 +60,7 @@ const stacks = [
   },
   {
     Screen: 'Description',
-    component: Home,
+    component: Description,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,
@@ -81,7 +84,7 @@ const stacks = [
   },
   {
     Screen: 'search',
-    component: Home,
+    component: SearchScreen,
     Options: {
       headerShown: false,
       presentation: 'modal',
@@ -99,7 +102,7 @@ const stacks = [
 
   {
     Screen: 'ProductSearch',
-    component: Home,
+    component: ProductSearch,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,

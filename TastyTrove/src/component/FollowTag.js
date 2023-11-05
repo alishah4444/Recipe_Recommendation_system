@@ -26,9 +26,9 @@ export default function FollowTag(props) {
             {user ? user.email : 'Please Login or Sign Up'}
           </Text>
           <Text style={{color: '#686F82', fontSize: 12}} numberOfLines={1}>
-            {user.username == undefined
+            {user.username == undefined || user.email == undefined
               ? 'Update profile is required'
-              : user.username}
+              : user.username || user.email}
           </Text>
         </View>
         <Ionicons

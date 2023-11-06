@@ -9,6 +9,7 @@ import ProductSearch from '../container/productSearch/productSearch';
 import Categories from '../container/category/category';
 import about from '../container/about/about';
 import help from '../container/about/help';
+import Splash from '../container/splashScreen/splash';
 
 const forFade = ({current}) => ({
   cardStyle: {
@@ -17,6 +18,15 @@ const forFade = ({current}) => ({
 });
 
 const stacks = [
+  {
+    Screen: 'Splash',
+    component: Splash,
+
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+    },
+  },
   {
     Screen: 'Home',
     component: Home,
@@ -32,14 +42,7 @@ const stacks = [
       headerShown: false,
     },
   },
-  {
-    Screen: 'Splash',
-    component: Home,
-    Options: {
-      headerShown: false,
-      cardStyleInterpolator: forFade,
-    },
-  },
+
   {
     Screen: 'BottomNavigation',
     component: BottomNavigation,

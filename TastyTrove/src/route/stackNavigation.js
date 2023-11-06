@@ -7,6 +7,8 @@ import Description from '../container/description/description';
 import SearchScreen from '../container/search/search';
 import ProductSearch from '../container/productSearch/productSearch';
 import Categories from '../container/category/category';
+import about from '../container/about/about';
+import help from '../container/about/help';
 
 const forFade = ({current}) => ({
   cardStyle: {
@@ -113,6 +115,22 @@ const stacks = [
   {
     Screen: 'Signup',
     component: Signup,
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+    },
+  },
+  {
+    Screen: 'About',
+    component: about,
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+    },
+  },
+  {
+    Screen: 'help',
+    component: help,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,

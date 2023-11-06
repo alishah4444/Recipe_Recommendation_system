@@ -52,6 +52,15 @@ export default function Profile() {
     }
   };
 
+  const settingHandler = async id => {
+    alert(id);
+    if (id === 1) {
+      navigation.navigate('help');
+    } else if (id === 2) {
+      navigation.navigate('help');
+    }
+  };
+
   const RenderBottomItem = () => <PhoneNumberLoginScreen />;
 
   const toggleBottomSheetVisibility = () => {
@@ -188,7 +197,7 @@ export default function Profile() {
             return (
               <SettingList
                 key={item.id + '_' + index}
-                handleClick={toggleBottomSheetVisibility}
+                clickHandler={() => settingHandler(item.id)}
                 componentStyle={{
                   backgroundColor: '#2d2f38',
                   margin: 10,

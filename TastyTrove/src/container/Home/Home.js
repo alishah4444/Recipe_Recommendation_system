@@ -148,7 +148,7 @@ export default function Home() {
         showSoftInputOnFocus={false}
       />
 
-      <TagHeading name={'Category'} />
+      <TagHeading name={'Category'} navigation={navigation} />
       <CategoryMenu navigation={navigation} />
     </View>
   );

@@ -53,7 +53,7 @@ export default function ProductSearch(props) {
             backgroundColor: '#252830',
           }}>
           <ImageWrapper
-            url={item.strMealThumb}
+            url={item?.strMealThumb || item?.Image}
             style={[
               styles.imageStyle,
               {

@@ -6,6 +6,7 @@ import Setting from '../container/Setting/Setting';
 import Description from '../container/description/description';
 import SearchScreen from '../container/search/search';
 import ProductSearch from '../container/productSearch/productSearch';
+import Categories from '../container/category/category';
 
 const forFade = ({current}) => ({
   cardStyle: {
@@ -92,8 +93,8 @@ const stacks = [
   },
 
   {
-    Screen: 'AllCategories',
-    component: Home,
+    Screen: 'category',
+    component: Categories,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,

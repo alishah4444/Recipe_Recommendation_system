@@ -20,6 +20,7 @@ import SettingList from '../../component/SettingList';
 import Header from '../../component/Header';
 import PhoneNumberLoginScreen from './PhoneVerfication';
 import {deleteUserInfo} from '../../../reducers/userReducer';
+import BottomSheet from '../../component/BottomSheet';
 
 export default function Profile() {
   const user = useSelector(state => state.userReducer.user);
@@ -42,9 +43,21 @@ export default function Profile() {
   });
 
   const clickHandler = async id => {
+    // alert(id);
     if (id === 5) {
       dispatch(deleteUserInfo());
       navigation.navigate('Home');
+    } else if (id === 4) {
+      setIsVisible(true);
+    }
+  };
+
+  const settingHandler = async id => {
+    alert(id);
+    if (id === 1) {
+      navigation.navigate('help');
+    } else if (id === 2) {
+      navigation.navigate('help');
     }
   };
 
@@ -184,7 +197,7 @@ export default function Profile() {
             return (
               <SettingList
                 key={item.id + '_' + index}
-                handleClick={toggleBottomSheetVisibility}
+                clickHandler={() => settingHandler(item.id)}
                 componentStyle={{
                   backgroundColor: '#2d2f38',
                   margin: 10,
@@ -238,6 +251,11 @@ export default function Profile() {
           })}
         </View>
       </AnimatedScrollView>
+      <BottomSheet
+        isVisible={isVisible}
+        toggleModal={toggleBottomSheetVisibility}
+        RenderBottomItem={RenderBottomItem}
+      />
     </View>
   );
 }

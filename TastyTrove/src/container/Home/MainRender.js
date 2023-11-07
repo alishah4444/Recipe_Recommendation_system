@@ -7,7 +7,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 const MainRender = memo(({item, goToDescription, width}) => {
   return (
     <TouchableOpacity
-      // onPress={() => goToDescription(item)}
+      onPress={() => goToDescription(item)}
       style={{
         width: width * 0.45,
         borderRadius: 8,

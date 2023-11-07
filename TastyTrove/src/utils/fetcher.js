@@ -22,4 +22,15 @@ const CREATE_USER = gql`
     }
   }
 `;
-export {USER_QUERY, CREATE_USER};
+
+const LOGIN_USER = gql`
+  mutation loginUser($email: String!, $password: String!) {
+    loginUser(email: $email, password: $password) {
+      email
+      password
+      refreshToken
+    }
+  }
+`;
+
+export {USER_QUERY, CREATE_USER, LOGIN_USER};

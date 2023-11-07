@@ -3,6 +3,13 @@ import LoginScreen from '../container/Login/Login';
 import Signup from '../container/Signup/Signup';
 import BottomNavigation from './BottomNavigation';
 import Setting from '../container/Setting/Setting';
+import Description from '../container/description/description';
+import SearchScreen from '../container/search/search';
+import ProductSearch from '../container/productSearch/productSearch';
+import Categories from '../container/category/category';
+import about from '../container/about/about';
+import help from '../container/about/help';
+import Splash from '../container/splashScreen/splash';
 
 const forFade = ({current}) => ({
   cardStyle: {
@@ -11,6 +18,15 @@ const forFade = ({current}) => ({
 });
 
 const stacks = [
+  {
+    Screen: 'Splash',
+    component: Splash,
+
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+    },
+  },
   {
     Screen: 'Home',
     component: Home,
@@ -26,14 +42,7 @@ const stacks = [
       headerShown: false,
     },
   },
-  {
-    Screen: 'Splash',
-    component: Home,
-    Options: {
-      headerShown: false,
-      cardStyleInterpolator: forFade,
-    },
-  },
+
   {
     Screen: 'BottomNavigation',
     component: BottomNavigation,
@@ -57,7 +66,7 @@ const stacks = [
   },
   {
     Screen: 'Description',
-    component: Home,
+    component: Description,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,
@@ -81,7 +90,7 @@ const stacks = [
   },
   {
     Screen: 'search',
-    component: Home,
+    component: SearchScreen,
     Options: {
       headerShown: false,
       presentation: 'modal',
@@ -89,8 +98,8 @@ const stacks = [
   },
 
   {
-    Screen: 'AllCategories',
-    component: Home,
+    Screen: 'category',
+    component: Categories,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,
@@ -99,7 +108,7 @@ const stacks = [
 
   {
     Screen: 'ProductSearch',
-    component: Home,
+    component: ProductSearch,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,
@@ -109,6 +118,22 @@ const stacks = [
   {
     Screen: 'Signup',
     component: Signup,
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+    },
+  },
+  {
+    Screen: 'About',
+    component: about,
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+    },
+  },
+  {
+    Screen: 'help',
+    component: help,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,

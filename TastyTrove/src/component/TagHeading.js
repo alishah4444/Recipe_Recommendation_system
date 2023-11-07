@@ -23,15 +23,10 @@ export default function TagHeading({
       </Text>
 
       <TouchableOpacity
-        onPress={handlerPress}
+        onPress={() => navigation.navigate('category')}
         style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={{color: '#ffffff', paddingHorizontal: 2}}>{'All'}</Text>
-        <Ionicons
-          name={'chevron-forward'}
-          size={22}
-          color={'#ffffff'}
-          onPress={() => navigation.goBack()}
-        />
+        <Ionicons name={'chevron-forward'} size={22} color={'#ffffff'} />
       </TouchableOpacity>
     </View>
   );

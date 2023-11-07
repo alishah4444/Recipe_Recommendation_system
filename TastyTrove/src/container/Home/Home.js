@@ -19,12 +19,15 @@ import {useNavigation} from '@react-navigation/native';
 import CategoryMenu from '../../component/CategoryMenu';
 import TagHeading from '../../component/TagHeading';
 import {getEmailInitials} from '../../constant/constant';
+import {Snackbar} from 'react-native-paper';
+import TextInputComponent from '../../component/TextInputComponent';
 
 const {width} = Dimensions.get('screen');
 
 export default function Home() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [visible, setVisibile] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const user = useSelector(state => state.userReducer.user);
@@ -39,11 +42,21 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    return () => {};
-  }, []);
+    if (user != null) {
+      if (user.username == undefined || user.phoneNumber == undefined) {
+        setVisibile(true);
+      }
+    }
 
+    return () => {};
+  }, [user]);
+
+  const goToDescription = React.useCallback(item => {
+    navigation.navigate('Description', {item: item});
+  }, []);
+  const goToSearch = React.useCallback(() => navigation.navigate('search'), []);
   const renderItem = ({item, index}) => (
-    <MainRender item={item} width={width} />
+    <MainRender item={item} width={width} goToDescription={goToDescription} />
   );
 
   const onChangeHandler = useCallback(() => {
@@ -113,18 +126,6 @@ export default function Home() {
             justifyContent: 'center',
             borderRadius: 50 / 2,
           }}>
-          {/* <ImageWrapper
-            url={!isEmpty(user) ? user.email : ''}
-            style={{
-              backgroundColor: '#02c39a',
-              height: 50,
-              width: 50,
-              overflow: 'hidden',
-
-              borderRadius: 50 / 2,
-            }}
-          /> */}
-
           {!isEmpty(user) ? (
             <Text
               style={{
@@ -139,13 +140,35 @@ export default function Home() {
           ) : null}
         </TouchableOpacity>
       </View>
-      <TagHeading name={'Category'} />
+      <TextInputComponent
+        placeholderTextColor="#686F82"
+        placeholder={'search food recipe'}
+        inputStyle={style.input}
+        onPressIn={goToSearch}
+        showSoftInputOnFocus={false}
+      />
+
+      <TagHeading name={'Category'} navigation={navigation} />
       <CategoryMenu navigation={navigation} />
     </View>
   );
 
   return (
     <View>
+      {data.length > 0 && (
+        <Snackbar
+          visible={visible}
+          onDismiss={() => {}}
+          style={{zIndex: 2, backgroundColor: '#02c39a', fontWeight: 'bold'}}
+          action={{
+            label: 'Go',
+            onPress: () => {
+              navigation.navigate('Setting');
+            },
+          }}>
+          Please complete profile
+        </Snackbar>
+      )}
       <FlatList
         data={data}
         style={{marginBottom: 10, paddingBottom: 10}}

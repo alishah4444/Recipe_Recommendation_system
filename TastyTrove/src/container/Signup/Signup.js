@@ -106,7 +106,7 @@ export default function Signup(props) {
           style={style.button}
           labelStyle={style.bottonLabel}
           onPress={handleSubmittion}>
-          Login
+          Signup
         </Button>
       </View>
     </View>

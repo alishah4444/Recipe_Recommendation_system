@@ -3,6 +3,10 @@ import {createSlice} from '@reduxjs/toolkit';
 const initialState = {
   user: {},
   userAdd: [],
+  boimetric: {
+    id: 0, //face id
+    isvisible: false,
+  },
 };
 
 export const userSlice = createSlice({

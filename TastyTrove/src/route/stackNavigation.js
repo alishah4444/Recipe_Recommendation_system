@@ -10,6 +10,7 @@ import Categories from '../container/category/category';
 import about from '../container/about/about';
 import help from '../container/about/help';
 import Splash from '../container/splashScreen/splash';
+import AddRecipe from '../container/addRecipe/addRecipe';
 
 const forFade = ({current}) => ({
   cardStyle: {
@@ -134,6 +135,15 @@ const stacks = [
   {
     Screen: 'help',
     component: help,
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+    },
+  },
+
+  {
+    Screen: 'AddRecipe',
+    component: AddRecipe,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,

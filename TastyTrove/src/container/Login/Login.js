@@ -13,7 +13,6 @@ import {useDispatch} from 'react-redux';
 import {setUserInfo} from '../../../reducers/userReducer';
 
 const LoginScreen = () => {
-  const {data, loading, error} = useQuery(USER_QUERY, {client});
   const dispatch = useDispatch();
   const [loginUser] = useMutation(LOGIN_USER, {client});
   const navigation = useNavigation();
@@ -21,14 +20,10 @@ const LoginScreen = () => {
   const [password, setPassword] = useState(null);
   const [errorCli, setErrorCLi] = useState(null);
 
-  useEffect(() => {
-    return () => {};
-  }, []);
-
   const handleLogin = async () => {
     try {
       if (userName !== null && password !== null) {
-        const {data} = await loginUser({
+        const {data, error} = await loginUser({
           variables: {email: userName, password: password},
         });
 
@@ -37,7 +32,7 @@ const LoginScreen = () => {
           navigation.navigate('Home');
         }
 
-        console.log(data);
+        console.log(error);
       } else {
         setErrorCLi('Please enter a username and password');
       }

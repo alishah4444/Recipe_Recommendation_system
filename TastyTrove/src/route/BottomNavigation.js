@@ -11,7 +11,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../container/Home/Home';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-// import AddRecipe from '../containers/addRecipe/addRecipe';
+import AddRecipe from '../container/addRecipe/addRecipe';
 // import Notification from '../containers/Notification/Notification';
 const Tab = createBottomTabNavigator();
 const {width, height} = Dimensions.get('screen');
@@ -116,7 +116,7 @@ export default function BottomNavigation() {
       <Tab.Screen
         key={1}
         name="addRecipe"
-        component={Home}
+        component={AddRecipe}
         options={{
           name: 'add',
         }}

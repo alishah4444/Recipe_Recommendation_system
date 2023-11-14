@@ -12,6 +12,7 @@ import help from '../container/about/help';
 import Splash from '../container/splashScreen/splash';
 import AddRecipe from '../container/addRecipe/addRecipe';
 import Donation from '../container/donation/donation';
+import Notification from '../container/Notification/Notification';
 
 const forFade = ({current}) => ({
   cardStyle: {
@@ -155,6 +156,15 @@ const stacks = [
   {
     Screen: 'donation',
     component: Donation,
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+      tabBarVisible: false,
+    },
+  },
+  {
+    Screen: 'notification',
+    component: Notification,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,

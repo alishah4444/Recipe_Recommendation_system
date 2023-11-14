@@ -12,7 +12,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../container/Home/Home';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AddRecipe from '../container/addRecipe/addRecipe';
-// import Notification from '../containers/Notification/Notification';
+import Notification from '../container/Notification/Notification';
+
 const Tab = createBottomTabNavigator();
 const {width, height} = Dimensions.get('screen');
 
@@ -129,7 +130,7 @@ export default function BottomNavigation() {
       <Tab.Screen
         key={2}
         name="menu"
-        component={Home}
+        component={Notification}
         options={{
           name: 'notifications',
         }}

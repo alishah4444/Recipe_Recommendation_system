@@ -10,6 +10,9 @@ import Categories from '../container/category/category';
 import about from '../container/about/about';
 import help from '../container/about/help';
 import Splash from '../container/splashScreen/splash';
+import AddRecipe from '../container/addRecipe/addRecipe';
+import Donation from '../container/donation/donation';
+import Notification from '../container/Notification/Notification';
 
 const forFade = ({current}) => ({
   cardStyle: {
@@ -137,6 +140,35 @@ const stacks = [
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,
+    },
+  },
+
+  {
+    Screen: 'AddRecipe',
+    component: AddRecipe,
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+      tabBarVisible: false,
+    },
+  },
+
+  {
+    Screen: 'donation',
+    component: Donation,
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+      tabBarVisible: false,
+    },
+  },
+  {
+    Screen: 'notification',
+    component: Notification,
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+      tabBarVisible: false,
     },
   },
 ];

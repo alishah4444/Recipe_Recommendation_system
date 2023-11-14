@@ -49,6 +49,11 @@ const accountSetting = [
   },
   {
     id: 5,
+    Type: 'Wish List',
+    arrow: true,
+  },
+  {
+    id: 6,
     Type: 'Log out',
     arrow: true,
   },

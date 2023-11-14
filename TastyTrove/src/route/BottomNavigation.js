@@ -119,6 +119,10 @@ export default function BottomNavigation() {
         component={AddRecipe}
         options={{
           name: 'add',
+          tabBarStyle: {
+            display: 'none',
+          },
+          tabBarVisible: false,
         }}
       />
 

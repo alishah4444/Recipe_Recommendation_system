@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {TouchableRipple} from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function BottomSheet(props) {
-  const {isVisible, toggleModal, RenderBottomItem} = props;
+  const {isVisible, toggleModal, RenderBottomItem, styleModel} = props;
 
   const handleModalPress = event => {
     event.stopPropagation();
@@ -23,11 +23,23 @@ export default function BottomSheet(props) {
       onBackdropPress={toggleModal}
       transparent={true}
       onSwipeComplete={toggleModal}>
-      <TouchableRipple style={style.modalView} onPress={toggleModal}>
+      <View style={style.modalView}>
         <View style={style.modelViewBeneath} onPress={handleModalPress}>
+          <TouchableOpacity style={style.backIcon} onPress={toggleModal}>
+            <Ionicons
+              name={'close'}
+              size={25}
+              style={{
+                alignSelf: 'center',
+
+                justifyContent: 'flex-start',
+              }}
+              color={'#ffff'}
+            />
+          </TouchableOpacity>
           {RenderBottomItem && <RenderBottomItem />}
         </View>
-      </TouchableRipple>
+      </View>
     </Modal>
   );
 }
@@ -46,5 +58,15 @@ const style = StyleSheet.create({
     backgroundColor: '#343743',
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
+  },
+  backIcon: {
+    width: 40,
+    height: 40,
+    padding: 2,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+    margin: 10,
+    backgroundColor: '#2C2F38',
   },
 });

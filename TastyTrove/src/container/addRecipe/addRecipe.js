@@ -11,17 +11,18 @@ import {useNavigation} from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 import BottomSheet from '../../component/BottomSheet';
 import {Button} from 'react-native-paper';
-
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import FastImage from 'react-native-fast-image';
+import SpecialInstruction from '../../component/SpecialInstruction';
 export default function AddRecipe() {
   const navigation = useNavigation();
   const [recipeName, setRecipeName] = useState('');
-  const [ingredient, setIngredient] = useState({
-    name: '',
-    qty: '',
-  });
+  const [ingredient, setIngredient] = useState({});
 
   const [ingredientData, setIngredientsData] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
+  const [imageSetter, setImageSetter] = useState(null);
+  const [instructionData, setInstructionData] = useState('');
 
   const handleIngridientsData = () => {
     setIngredientsData(prevState => [...prevState, ingredient]);
@@ -31,11 +32,48 @@ export default function AddRecipe() {
   };
   const handleCreateRecipe = () => {};
 
+  const handleImagePicker = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('Image picker error: ', response.error);
+      } else {
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        setImageSetter(imageUri);
+      }
+    });
+  };
+
+  const handleCancel = index => {
+    let result = ingredientData.filter((item, ind) => ind !== index);
+    console.log(result);
+    console.log(index);
+    setIngredientsData(result);
+  };
+
+  const renderItem = tag => {
+    if (tag === 5) {
+      setIsVisible(!isVisible);
+
+      return (
+        <View>
+          <Text>Hello</Text>
+          <Ionicons name={'ellipsis-horizontal'} size={28} color={'#B0B6C8'} />
+        </View>
+      );
+    }
+  };
+
   return (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 20}
-      style={{flex: 1}}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={{flex: 1}}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}>
@@ -58,23 +96,29 @@ export default function AddRecipe() {
         />
         <View style={style.container}>
           <Text style={style.mainHeading}>Create Recipe</Text>
-          <ImageWrapper style={style.imageStyle}></ImageWrapper>
 
-          <Ionicons
-            name={'image'}
-            size={28}
-            style={{
-              position: 'absolute',
-              top: 20,
-              right: 0,
+          <TouchableOpacity onPress={handleImagePicker}>
+            <ImageWrapper
+              style={style.imageStyle}
+              resizeMode={FastImage.resizeMode.cover}
+              url={imageSetter}></ImageWrapper>
 
-              backgroundColor: '#02c39a',
-              padding: 5,
-              borderRadius: 5,
-              elevation: 4,
-            }}
-            color={'#343743'}
-          />
+            <Ionicons
+              name={'image'}
+              size={28}
+              style={{
+                position: 'absolute',
+                top: 20,
+                right: 0,
+
+                backgroundColor: '#02c39a',
+                padding: 5,
+                borderRadius: 5,
+                elevation: 4,
+              }}
+              color={'#343743'}
+            />
+          </TouchableOpacity>
 
           <TextInputComponent
             placeholder={'Recipe Name'}
@@ -139,14 +183,19 @@ export default function AddRecipe() {
                   inputStyle={style.ingredient2}
                 />
                 <View style={style.iconBorder}>
-                  <Ionicons name={'remove'} size={28} color={'#B0B6C8'} />
+                  <Ionicons
+                    name={'remove'}
+                    size={28}
+                    color={'#B0B6C8'}
+                    onPress={() => handleCancel(index)}
+                  />
                 </View>
               </Animatable.View>
             ))}
 
           <View style={style.ingredientBox}>
             <TextInputComponent
-              placeholder={'Recipe Name'}
+              placeholder={'Ingredient Name'}
               inputStyle={style.ingredient1}
               onChangeHandler={value => {
                 console.log(value);
@@ -154,7 +203,7 @@ export default function AddRecipe() {
               }}
             />
             <TextInputComponent
-              placeholder={'Recipe Name'}
+              placeholder={'Measures'}
               inputStyle={style.ingredient2}
               onChangeHandler={value => {
                 console.log(value);
@@ -170,22 +219,9 @@ export default function AddRecipe() {
               />
             </View>
           </View>
-
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <Ionicons
-              name={'add'}
-              size={34}
-              color={'#02c39a'}
-              onPress={handleIngridientsData}
-            />
-
-            <Text style={style.subheading2}>Add Instructions</Text>
-          </View>
+          <TouchableOpacity onPress={() => renderItem(5)}>
+            <SpecialInstruction instructionData={instructionData} />
+          </TouchableOpacity>
         </View>
 
         <Button
@@ -194,8 +230,20 @@ export default function AddRecipe() {
           onPress={handleCreateRecipe}>
           Save my recipe
         </Button>
-        <BottomSheet isVisible={isVisible} toggleModal={handleListItem} />
-        <View style={{height: 90}}></View>
+        <BottomSheet
+          isVisible={isVisible}
+          toggleModal={handleListItem}
+          RenderBottomItem={() => (
+            <View>
+              <Text>Hello</Text>
+              <Ionicons
+                name={'ellipsis-horizontal'}
+                size={28}
+                color={'#B0B6C8'}
+              />
+            </View>
+          )}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );

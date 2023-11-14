@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   Dimensions,
+  Touchable,
 } from 'react-native';
 import style from './style';
 import MainRender from './MainRender';
@@ -21,6 +22,7 @@ import TagHeading from '../../component/TagHeading';
 import {getEmailInitials} from '../../constant/constant';
 import {Snackbar} from 'react-native-paper';
 import TextInputComponent from '../../component/TextInputComponent';
+import FastImage from 'react-native-fast-image';
 
 const {width} = Dimensions.get('screen');
 
@@ -150,6 +152,24 @@ export default function Home() {
 
       <TagHeading name={'Category'} navigation={navigation} />
       <CategoryMenu navigation={navigation} />
+      <TagHeading name={'Donation'} navigation={navigation} />
+      <TouchableOpacity onPress={() => navigation.navigate('donation')}>
+        <ImageWrapper
+          url={
+            'https://militarymissions.org/wp-content/uploads/2021/08/Launch-Cents-Email-Masthead-1024x341.png'
+          }
+          style={{
+            backgroundColor: '#02c39a',
+            height: Dimensions.get('screen').width * 0.4,
+            width: Dimensions.get('screen').width * 0.97,
+            overflow: 'hidden',
+            alignSelf: 'center',
+            borderRadius: 5,
+            marginVertical: 12,
+          }}
+          resizeMode={FastImage.resizeMode.stretch}
+        />
+      </TouchableOpacity>
     </View>
   );
 

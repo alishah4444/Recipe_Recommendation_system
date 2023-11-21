@@ -44,7 +44,7 @@ export default function Profile() {
 
   const clickHandler = async id => {
     // alert(id);
-    if (id === 5) {
+    if (id === 6) {
       dispatch(deleteUserInfo());
       navigation.navigate('Home');
     } else if (id === 4) {

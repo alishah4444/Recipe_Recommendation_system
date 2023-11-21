@@ -2,7 +2,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React, {memo} from 'react';
 import ImageWrapper from '../../component/ImageWrapper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const MainRender = memo(({item, goToDescription, width}) => {
   return (
@@ -48,26 +48,23 @@ const MainRender = memo(({item, goToDescription, width}) => {
       <View
         style={{
           flexDirection: 'row',
-          margin: 5,
+          alignItems: 'center',
+          marginHorizontal: 10,
           marginBottom: 10,
-          justifyContent: 'space-evenly',
+          justifyContent: 'space-between',
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+          }}>
           <AntDesign name={'staro'} size={15} color={'#686F82'} />
           <Text style={{color: '#686F82', fontWeight: 'bold'}}>
             {' 20 min'}
           </Text>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginLeft: 10,
-            alignItems: 'center',
-          }}>
-          <Entypo name={'stopwatch'} size={15} color={'#686F82'} />
-          <Text style={{color: '#686F82', fontWeight: 'bold'}}>
-            {`${Number(item.recipe?.calories).toFixed(2)} Cal`}
-          </Text>
+        <View>
+          <Ionicons name={'heart'} size={28} color={'#B0B6C8'} />
         </View>
       </View>
     </TouchableOpacity>

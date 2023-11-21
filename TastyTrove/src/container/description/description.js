@@ -7,7 +7,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -15,6 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import ImageWrapper from '../../component/FastImage';
 import Header from '../../component/Header';
 import IconLabel from '../../component/IconLabel';
+import {Button} from 'react-native-paper';
 
 export default function Description(props) {
   const navigation = useNavigation();
@@ -22,6 +23,7 @@ export default function Description(props) {
   const {item} = props.route.params;
   const height = Dimensions.get('screen').width * 0.55;
   const width = Dimensions.get('screen').width * 0.55;
+  const [sliceVal, setSliceVal] = useState(3);
 
   console.log(item);
 
@@ -127,9 +129,7 @@ export default function Description(props) {
             onPress={() => navigation.goBack()}
           />
         }
-        rightComponent={
-          <Ionicons name={'ios-heart-outline'} size={28} color={'#B0B6C8'} />
-        }
+        rightComponent={<Ionicons name={'heart'} size={28} color={'#B0B6C8'} />}
       />
 
       <View style={{alignItems: 'center'}}>
@@ -245,10 +245,39 @@ export default function Description(props) {
         </Text>
 
         <FlatList
-          data={item.recipe.ingredients}
+          data={item.recipe.ingredients.slice(0, sliceVal)}
           renderItem={renderHorizontal}
           horizontal={false}
           showsHorizontalScrollIndicator={false}
+          ListFooterComponent={() => (
+            <TouchableOpacity
+              onPress={() => {
+                sliceVal === 3
+                  ? setSliceVal(item.recipe.ingredients.length)
+                  : setSliceVal(3);
+              }}>
+              <Button
+                style={{
+                  padding: 5,
+                  marginVertical: 15,
+                  justifyContent: 'center',
+                  color: 'white',
+                  borderRadius: 10,
+                  alignSelf: 'center',
+                  backgroundColor: '#02c39a',
+                  width: Dimensions.get('window').width,
+                }}
+                labelStyle={{
+                  color: '#686F82',
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  textAlign: 'center',
+                  letterSpacing: 2,
+                }}>
+                {sliceVal === 3 ? 'Show More' : 'Show Less'}
+              </Button>
+            </TouchableOpacity>
+          )}
         />
       </View>
     </ScrollView>

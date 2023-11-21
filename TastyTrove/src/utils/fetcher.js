@@ -4,7 +4,7 @@ const USER_QUERY = gql`
   query {
     users {
       email
-      id
+
       loginType
       phoneNo
       refreshToken
@@ -29,8 +29,28 @@ const LOGIN_USER = gql`
       email
       password
       refreshToken
+      id
     }
   }
 `;
 
-export {USER_QUERY, CREATE_USER, LOGIN_USER};
+const CREATE_RECIPE = gql`
+  mutation CreateRecipe($input: RecipeInput!) {
+    createRecipe(input: $input) {
+      title
+      description
+      rating
+      imageUrl
+      ingredients {
+        name
+        qty
+      }
+      specialInstruction
+      userId
+      cookTime
+      servings
+    }
+  }
+`;
+
+export {USER_QUERY, CREATE_USER, LOGIN_USER, CREATE_RECIPE};

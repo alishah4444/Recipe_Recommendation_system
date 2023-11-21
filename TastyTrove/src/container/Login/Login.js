@@ -28,6 +28,7 @@ const LoginScreen = () => {
         });
 
         if (data != null) {
+          console.log(data.loginUser);
           dispatch(setUserInfo(data.loginUser));
           navigation.navigate('Home');
         }

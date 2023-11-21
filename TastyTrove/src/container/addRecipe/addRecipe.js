@@ -14,23 +14,53 @@ import {Button} from 'react-native-paper';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import FastImage from 'react-native-fast-image';
 import SpecialInstruction from '../../component/SpecialInstruction';
+import {CREATE_RECIPE} from '../../utils/fetcher';
+import client from '../../utils/Apollo';
+import {useMutation} from '@apollo/client';
+import {useSelector, useDispatch} from 'react-redux';
+import storage from '@react-native-firebase/storage';
 export default function AddRecipe() {
   const navigation = useNavigation();
   const [recipeName, setRecipeName] = useState('');
+  const [recipeImageURL, setRecipeImageURL] = useState('');
   const [ingredient, setIngredient] = useState({});
+  const user = useSelector(state => state.userReducer.user);
 
   const [ingredientData, setIngredientsData] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [imageSetter, setImageSetter] = useState(null);
   const [instructionData, setInstructionData] = useState('');
-
+  const [clickedItem, setClickedItem] = useState(null);
+  const [CreateRecipe] = useMutation(CREATE_RECIPE, {client});
   const handleIngridientsData = () => {
     setIngredientsData(prevState => [...prevState, ingredient]);
   };
   const handleListItem = () => {
     setIsVisible(!isVisible);
   };
-  const handleCreateRecipe = () => {};
+  const handleCreateRecipe = async () => {
+    try {
+      let recipeInput = {
+        title: recipeName,
+        imageUrl: recipeImageURL,
+        description: 'This is a new recipe.',
+        rating: '5',
+        ingredients: ingredientData,
+        specialInstruction: '',
+        userId: user.id,
+        cookTime: '11 minutes',
+        servings: '3',
+      };
+
+      console.log(recipeInput);
+
+      const {data} = await CreateRecipe({variables: {input: recipeInput}});
+      console.log(data);
+    } catch (error) {
+      console.error('Error creating recipe:', error.message);
+      throw error;
+    }
+  };
 
   const handleImagePicker = () => {
     const options = {
@@ -48,8 +78,20 @@ export default function AddRecipe() {
       } else {
         let imageUri = response.uri || response.assets?.[0]?.uri;
         setImageSetter(imageUri);
+        uploadImage();
       }
     });
+  };
+  const uploadImage = async () => {
+    try {
+      const reference = storage().ref('images/' + imageSetter);
+      await reference.putFile(imageSetter);
+      const imageUrl = await reference.getDownloadURL();
+      setRecipeImageURL(imageUrl);
+      console.log('Image uploaded successfully. Image URL:', imageUrl);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
   };
 
   const handleCancel = index => {
@@ -64,9 +106,16 @@ export default function AddRecipe() {
       setIsVisible(!isVisible);
 
       return (
-        <View>
-          <Text>Hello</Text>
-          <Ionicons name={'ellipsis-horizontal'} size={28} color={'#B0B6C8'} />
+        <View style={{padding: 12}}>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 30,
+              fontWeight: 'bold',
+              letterSpacing: 1,
+            }}>
+            Hello
+          </Text>
         </View>
       );
     }
@@ -225,7 +274,7 @@ export default function AddRecipe() {
         </View>
 
         <Button
-          style={style.button}
+          style={[style.button, {marginBottom: 100}]}
           labelStyle={style.bottonLabel}
           onPress={handleCreateRecipe}>
           Save my recipe
@@ -233,16 +282,7 @@ export default function AddRecipe() {
         <BottomSheet
           isVisible={isVisible}
           toggleModal={handleListItem}
-          RenderBottomItem={() => (
-            <View>
-              <Text>Hello</Text>
-              <Ionicons
-                name={'ellipsis-horizontal'}
-                size={28}
-                color={'#B0B6C8'}
-              />
-            </View>
-          )}
+          RenderBottomItem={() => renderItem(5)}
         />
       </ScrollView>
     </KeyboardAvoidingView>

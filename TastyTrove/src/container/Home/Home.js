@@ -175,20 +175,6 @@ export default function Home() {
 
   return (
     <View>
-      {data.length > 0 && (
-        <Snackbar
-          visible={visible}
-          onDismiss={() => {}}
-          style={{zIndex: 2, backgroundColor: '#02c39a', fontWeight: 'bold'}}
-          action={{
-            label: 'Go',
-            onPress: () => {
-              navigation.navigate('Setting');
-            },
-          }}>
-          Please complete profile
-        </Snackbar>
-      )}
       <FlatList
         data={data}
         style={{marginBottom: 10, paddingBottom: 10}}

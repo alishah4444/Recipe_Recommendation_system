@@ -58,12 +58,14 @@ const MainRender = memo(({item, goToDescription, width}) => {
             flexDirection: 'row',
             flex: 1,
           }}>
+
           <AntDesign name={'staro'} size={15} color={'#686F82'} />
           <Text style={{color: '#686F82', fontWeight: 'bold'}}>
             {' 20 min'}
           </Text>
         </View>
         <View>
+          {/* added heart icon */}
           <Ionicons name={'heart'} size={28} color={'#B0B6C8'} />
         </View>
       </View>

@@ -23,6 +23,7 @@ import {getEmailInitials} from '../../constant/constant';
 import {Snackbar} from 'react-native-paper';
 import TextInputComponent from '../../component/TextInputComponent';
 import FastImage from 'react-native-fast-image';
+import useSocket from '../../hook/useSocket';
 
 const {width} = Dimensions.get('screen');
 

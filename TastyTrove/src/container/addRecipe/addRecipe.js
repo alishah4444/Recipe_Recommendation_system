@@ -1,6 +1,6 @@
-import {View, Text, KeyboardAvoidingView, Platform} from 'react-native';
+import {View, Text, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 import {style} from './style';
 import Header from '../../component/Header';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -19,31 +19,33 @@ import client from '../../utils/Apollo';
 import {useMutation} from '@apollo/client';
 import {useSelector, useDispatch} from 'react-redux';
 import storage from '@react-native-firebase/storage';
+import useSocket from '../../hook/useSocket';
 export default function AddRecipe() {
   const navigation = useNavigation();
   const [recipeName, setRecipeName] = useState('');
   const [recipeImageURL, setRecipeImageURL] = useState('');
   const [ingredient, setIngredient] = useState({});
   const user = useSelector(state => state.userReducer.user);
-
   const [ingredientData, setIngredientsData] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
   const [imageSetter, setImageSetter] = useState(null);
   const [instructionData, setInstructionData] = useState('');
+  const [servings, setServings] = useState(null);
+  const [cookTime, setCookTime] = useState(null);
   const [clickedItem, setClickedItem] = useState(null);
+  const [recipeDesc, setRecipeDesc] = useState('');
+  const general = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
   const [CreateRecipe] = useMutation(CREATE_RECIPE, {client});
   const handleIngridientsData = () => {
     setIngredientsData(prevState => [...prevState, ingredient]);
   };
-  const handleListItem = () => {
-    setIsVisible(!isVisible);
-  };
+
   const handleCreateRecipe = async () => {
     try {
       let recipeInput = {
         title: recipeName,
         imageUrl: recipeImageURL,
-        description: 'This is a new recipe.',
+        description: recipeDesc,
         rating: '5',
         ingredients: ingredientData,
         specialInstruction: '',
@@ -52,10 +54,7 @@ export default function AddRecipe() {
         servings: '3',
       };
 
-      console.log(recipeInput);
-
       const {data} = await CreateRecipe({variables: {input: recipeInput}});
-      console.log(data);
     } catch (error) {
       console.error('Error creating recipe:', error.message);
       throw error;
@@ -78,14 +77,14 @@ export default function AddRecipe() {
       } else {
         let imageUri = response.uri || response.assets?.[0]?.uri;
         setImageSetter(imageUri);
-        uploadImage();
+        uploadImage(imageUri);
       }
     });
   };
-  const uploadImage = async () => {
+  const uploadImage = async imageUri => {
     try {
-      const reference = storage().ref('images/' + imageSetter);
-      await reference.putFile(imageSetter);
+      const reference = await storage().ref('images/' + imageUri);
+      const imageData = await reference.putFile(imageUri);
       const imageUrl = await reference.getDownloadURL();
       setRecipeImageURL(imageUrl);
       console.log('Image uploaded successfully. Image URL:', imageUrl);
@@ -102,22 +101,84 @@ export default function AddRecipe() {
   };
 
   const renderItem = tag => {
-    if (tag === 5) {
-      setIsVisible(!isVisible);
+    setIsVisible(true);
+    setClickedItem(tag);
+  };
+  const renderItemChild = active => {
+    switch (active) {
+      case 1:
+        return (
+          <View style={{paddingHorizontal: 10}}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 25,
+                fontWeight: 'bold',
+                letterSpacing: 1,
+              }}>
+              Cook Time
+            </Text>
 
-      return (
-        <View style={{padding: 12}}>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 30,
-              fontWeight: 'bold',
-              letterSpacing: 1,
-            }}>
-            Hello
-          </Text>
-        </View>
-      );
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {general.map((item, ind) => (
+                <TouchableOpacity
+                  key={ind}
+                  style={{
+                    height: 50,
+                    width: 50,
+                    borderRadius: 50 / 2,
+                    borderWidth: servings == item ? 2 : 0,
+                    borderColor: '#fff',
+                    margin: 10,
+                    backgroundColor: '#02c39a',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => setServings(item)}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      letterSpacing: 1,
+                    }}>
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        );
+
+      case 2:
+        return (
+          <View style={{paddingHorizontal: 10}}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 25,
+                fontWeight: 'bold',
+                letterSpacing: 1,
+              }}>
+              Servings
+            </Text>
+          </View>
+        );
+
+      case 5:
+        return (
+          <View style={{paddingHorizontal: 10}}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 25,
+                fontWeight: 'bold',
+                letterSpacing: 1,
+              }}>
+              Instructions
+            </Text>
+          </View>
+        );
     }
   };
 
@@ -152,21 +213,23 @@ export default function AddRecipe() {
               resizeMode={FastImage.resizeMode.cover}
               url={imageSetter}></ImageWrapper>
 
-            <Ionicons
-              name={'image'}
-              size={28}
-              style={{
-                position: 'absolute',
-                top: 20,
-                right: 0,
+            {imageSetter == null ? (
+              <Ionicons
+                name={'image'}
+                size={28}
+                style={{
+                  position: 'absolute',
+                  top: 20,
+                  right: 0,
 
-                backgroundColor: '#02c39a',
-                padding: 5,
-                borderRadius: 5,
-                elevation: 4,
-              }}
-              color={'#343743'}
-            />
+                  backgroundColor: '#02c39a',
+                  padding: 5,
+                  borderRadius: 5,
+                  elevation: 4,
+                }}
+                color={'#343743'}
+              />
+            ) : null}
           </TouchableOpacity>
 
           <TextInputComponent
@@ -176,41 +239,51 @@ export default function AddRecipe() {
               setRecipeName(value);
             }}
           />
-          <ListItem
-            handleList={handleListItem}
-            imageStyle={style.imageListStyle}
-            listStyle={style.listitemStyle}
-            labelTag="Cook Time"
-            labelStyle={style.labelStyle}
-            labelValue="2.5"
-            valueStyle={style.valueStyle}
-            ListIcon={() => (
-              <Ionicons
-                name={'chevron-forward'}
-                size={28}
-                color={'#686F82'}
-                onPress={() => navigation.goBack()}
-              />
-            )}
+
+          <TextInputComponent
+            placeholder={'Recipe Descriptions'}
+            inputStyle={style.input}
+            onChangeHandler={value => {
+              setRecipeDesc(value);
+            }}
           />
 
-          <ListItem
-            handleList={handleListItem}
-            imageStyle={style.imageListStyle}
-            listStyle={style.listitemStyle}
-            labelTag="Servings"
-            labelValue="2"
-            valueStyle={style.valueStyle}
-            labelStyle={style.labelStyle}
-            ListIcon={() => (
-              <Ionicons
-                name={'chevron-forward'}
-                size={28}
-                color={'#686F82'}
-                onPress={() => navigation.goBack()}
-              />
-            )}
-          />
+          <TouchableOpacity onPress={() => renderItem(1)}>
+            <ListItem
+              imageStyle={style.imageListStyle}
+              listStyle={style.listitemStyle}
+              labelTag="Cook Time"
+              labelStyle={style.labelStyle}
+              labelValue="2.5"
+              valueStyle={style.valueStyle}
+              ListIcon={() => (
+                <Ionicons
+                  name={'chevron-forward'}
+                  size={28}
+                  color={'#686F82'}
+                  onPress={() => renderItem(1)}
+                />
+              )}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => renderItem(2)}>
+            <ListItem
+              imageStyle={style.imageListStyle}
+              listStyle={style.listitemStyle}
+              labelTag="Servings"
+              labelValue="2"
+              valueStyle={style.valueStyle}
+              labelStyle={style.labelStyle}
+              ListIcon={() => (
+                <Ionicons
+                  name={'chevron-forward'}
+                  size={28}
+                  color={'#686F82'}
+                  onPress={() => renderItem(2)}
+                />
+              )}
+            />
+          </TouchableOpacity>
           <Text style={style.subHeading}>Ingredients</Text>
 
           {ingredientData.length > 0 &&
@@ -281,8 +354,9 @@ export default function AddRecipe() {
         </Button>
         <BottomSheet
           isVisible={isVisible}
-          toggleModal={handleListItem}
-          RenderBottomItem={() => renderItem(5)}
+          styleModel={{height: 250}}
+          toggleModal={() => setIsVisible(!isVisible)}
+          RenderBottomItem={() => renderItemChild(clickedItem)}
         />
       </ScrollView>
     </KeyboardAvoidingView>

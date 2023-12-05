@@ -11,17 +11,25 @@ const NotificationList = props => {
     valueStyle,
     labelValue,
     IconComponent,
+    BadageData,
   } = props;
 
   return (
-    <TouchableOpacity style={listStyle} onPress={handleList}>
-      {IconComponent && <IconComponent />}
-      <View style={{flexDirection: 'column', flex: 1}}>
-        <Text style={labelStyle}>{labelTag}</Text>
-        <Text style={valueStyle}>{labelValue}</Text>
+    <View style={[listStyle, {flexDirection: 'column'}]} onPress={handleList}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          flex: 1,
+        }}>
+        {IconComponent && <IconComponent />}
+        <View style={{flexDirection: 'column', justifyContent: 'center'}}>
+          <Text style={labelStyle}>{labelTag}</Text>
+          <Text style={valueStyle}>{labelValue}</Text>
+        </View>
       </View>
-      {ListIcon && <ListIcon />}
-    </TouchableOpacity>
+      {BadageData && <BadageData />}
+    </View>
   );
 };
 export default NotificationList;

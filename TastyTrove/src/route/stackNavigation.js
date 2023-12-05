@@ -13,6 +13,7 @@ import Splash from '../container/splashScreen/splash';
 import AddRecipe from '../container/addRecipe/addRecipe';
 import Donation from '../container/donation/donation';
 import Notification from '../container/Notification/Notification';
+import Wishlist from '../container/Setting/Wishlist';
 
 const forFade = ({current}) => ({
   cardStyle: {
@@ -127,10 +128,11 @@ const stacks = [
     },
   },
   {
-    Screen: 'About',
+    Screen: 'about',
     component: about,
     Options: {
-      headerShown: false,
+      headerShown: true,
+
       cardStyleInterpolator: forFade,
     },
   },
@@ -138,7 +140,7 @@ const stacks = [
     Screen: 'help',
     component: help,
     Options: {
-      headerShown: false,
+      headerShown: true,
       cardStyleInterpolator: forFade,
     },
   },
@@ -165,6 +167,15 @@ const stacks = [
   {
     Screen: 'notification',
     component: Notification,
+    Options: {
+      headerShown: false,
+      cardStyleInterpolator: forFade,
+      tabBarVisible: false,
+    },
+  },
+  {
+    Screen: 'Wishlist',
+    component: Wishlist,
     Options: {
       headerShown: false,
       cardStyleInterpolator: forFade,

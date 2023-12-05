@@ -49,6 +49,7 @@ const CREATE_RECIPE = gql`
       userId
       cookTime
       servings
+      socketId
     }
   }
 `;

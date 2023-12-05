@@ -7,9 +7,31 @@ import {notificationType} from '../../constant/constant';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import NotificationList from '../../component/NotificationList';
 import RenderNotificationList from './renderNotificationList';
+import useSocket from '../../hook/useSocket';
+import _ from 'lodash';
 
+import {io} from 'socket.io-client';
+const socket = io.connect('http://10.0.0.191:3000');
 export default function Notification() {
-  const handleListItem = () => {};
+  const [data, setData] = React.useState([]);
+  const {socket: notificationSocket} = useSocket();
+
+  socket.on('ReciepeTrigger', datao => {
+    setData(datao);
+  });
+
+  React.useEffect(() => {
+    const handleRecipeTrigger = datao => {
+      console.log('Recipe Triggered:', datao);
+      setData(datao);
+    };
+
+    notificationSocket.on('ReciepeTrigger', handleRecipeTrigger);
+
+    return () => {
+      notificationSocket.off('ReciepeTrigger', handleRecipeTrigger);
+    };
+  }, [notificationSocket]);
 
   return (
     <View style={styles.marginAround}>
@@ -34,10 +56,7 @@ export default function Notification() {
           );
         })}
       </View>
-      <RenderNotificationList
-        notyData={['', '']}
-        handleListItem={handleListItem}
-      />
+      <RenderNotificationList notyData={!_.isEmpty(data) ? data : null} />
     </View>
   );
 }

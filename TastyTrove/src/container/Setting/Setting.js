@@ -43,21 +43,21 @@ export default function Profile() {
   });
 
   const clickHandler = async id => {
-    // alert(id);
     if (id === 6) {
       dispatch(deleteUserInfo());
       navigation.navigate('Home');
     } else if (id === 4) {
       setIsVisible(true);
+    } else if (id === 5) {
+      navigation.navigate('Wishlist');
     }
   };
 
   const settingHandler = async id => {
-    alert(id);
     if (id === 1) {
       navigation.navigate('help');
     } else if (id === 2) {
-      navigation.navigate('help');
+      navigation.navigate('about');
     }
   };
 

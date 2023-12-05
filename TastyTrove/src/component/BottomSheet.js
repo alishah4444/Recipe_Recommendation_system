@@ -24,7 +24,9 @@ export default function BottomSheet(props) {
       transparent={true}
       onSwipeComplete={toggleModal}>
       <View style={style.modalView}>
-        <View style={style.modelViewBeneath} onPress={handleModalPress}>
+        <View
+          style={[style.modelViewBeneath, styleModel]}
+          onPress={handleModalPress}>
           <TouchableOpacity style={style.backIcon} onPress={toggleModal}>
             <Ionicons
               name={'close'}

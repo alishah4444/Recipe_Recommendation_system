@@ -4,11 +4,16 @@ import NotificationList from '../../component/NotificationList';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {styles} from './style';
 import * as Animatable from 'react-native-animatable';
+import ImageWrapper from '../../component/ImageWrapper';
+import FastImage from 'react-native-fast-image';
+import {Chip} from 'react-native-paper';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export default function RenderNotificationList(props) {
   const {notyData, handleListItem, navigation} = props;
 
   const renderItem = ({item, index}) => {
+    console.log(item?.imageUrl, 'fsfsds');
     const animationDelay = 500 * index;
 
     return (
@@ -19,9 +24,22 @@ export default function RenderNotificationList(props) {
         <NotificationList
           handleList={handleListItem}
           listStyle={styles.listitemStyle}
-          labelTag="Servings"
-          labelValue="we are sorry about this notification list"
+          labelTag={item?.title}
+          labelValue={item?.description}
           valueStyle={styles.valueStyle}
+          BadageData={() => (
+            <ScrollView horizontal style={{flexDirection: 'row'}}>
+              {item?.ingredients.map((itm, i) => (
+                <Chip
+                  style={{
+                    marginHorizontal: 2,
+                    backgroundColor: '#02c39a',
+                  }}>
+                  {itm.name + '-' + itm.qty}
+                </Chip>
+              ))}
+            </ScrollView>
+          )}
           labelStyle={styles.labelStyle}
           ListIcon={() => (
             <Ionicons
@@ -32,15 +50,17 @@ export default function RenderNotificationList(props) {
             />
           )}
           IconComponent={() => (
-            <TouchableOpacity
-              style={{padding: 5, backgroundColor: '#02c39a', borderRadius: 8}}>
-              <Ionicons
-                name={'mail'}
-                size={28}
-                color={'#343743'}
-                onPress={() => navigation.goBack()}
-              />
-            </TouchableOpacity>
+            <ImageWrapper
+              url={item?.imageUrl}
+              style={{
+                backgroundColor: '#02c39a',
+                height: 60,
+                width: 60,
+                overflow: 'hidden',
+                marginVertical: 12,
+              }}
+              resizeMode={FastImage.resizeMode.cover}
+            />
           )}
         />
       </Animatable.View>

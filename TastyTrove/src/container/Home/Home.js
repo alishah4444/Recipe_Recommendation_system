@@ -119,7 +119,7 @@ export default function Home() {
           onPress={() =>
             !isEmpty(user)
               ? navigation.navigate('Setting', {})
-              : navigation.navigate('Login', {})
+              : navigation.navigate('Setting', {})
           }
           style={{
             backgroundColor: '#02c39a',

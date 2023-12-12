@@ -17,7 +17,7 @@ export default function Notification() {
   const {socket: notificationSocket} = useSocket();
 
   socket.on('ReciepeTrigger', datao => {
-    setData(datao);
+    setData(datao); //local state
   });
 
   React.useEffect(() => {
@@ -26,10 +26,10 @@ export default function Notification() {
       setData(datao);
     };
 
-    notificationSocket.on('ReciepeTrigger', handleRecipeTrigger);
+    notificationSocket.on('ReciepeTrigger', handleRecipeTrigger); //trigger notification
 
     return () => {
-      notificationSocket.off('ReciepeTrigger', handleRecipeTrigger);
+      notificationSocket.off('ReciepeTrigger', handleRecipeTrigger); //clear connection
     };
   }, [notificationSocket]);
 
@@ -57,6 +57,7 @@ export default function Notification() {
         })}
       </View>
       <RenderNotificationList notyData={!_.isEmpty(data) ? data : null} />
+      {/* render again when data is changed */}
     </View>
   );
 }

@@ -67,7 +67,7 @@ export default function AddRecipe() {
       includeBase64: false,
       maxHeight: 2000,
       maxWidth: 2000,
-    };
+    }; //get image from firebase
 
     launchImageLibrary(options, response => {
       if (response.didCancel) {
@@ -83,8 +83,8 @@ export default function AddRecipe() {
   };
   const uploadImage = async imageUri => {
     try {
-      const reference = await storage().ref('images/' + imageUri);
-      const imageData = await reference.putFile(imageUri);
+      const reference = await storage().ref('images/' + imageUri); //get firebase connection
+      const imageData = await reference.putFile(imageUri); // get url
       const imageUrl = await reference.getDownloadURL();
       setRecipeImageURL(imageUrl);
       console.log('Image uploaded successfully. Image URL:', imageUrl);
